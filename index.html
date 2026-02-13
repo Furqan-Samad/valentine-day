@@ -57,7 +57,7 @@
 
 <script>
 const PASSWORD = "Love123";
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzbmM-O6uRcJW6LIXjjyLIPgAIcSiDmsAtBumrENKG4mvOdZ05tcTtcpy-xWqswwV067A/exec";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbwFSH05TvcvP5ixn6CmxgHEiHawJTQndDly4xhvCAE9tE92EmKb3qjRMtzOWOTr_f4f2w/exec"; // replace with your Apps Script ID
 
 // ===== Password Unlock =====
 function unlockPassword(){
@@ -119,16 +119,14 @@ async function saveMemory(){
   const memory = document.getElementById("memoryText").value.trim();
   if(!memory){ showPopup("Please write a memory ❤️"); return; }
 
+  const url = `${SHEET_URL}?name=${encodeURIComponent(name)}&memory=${encodeURIComponent(memory)}&proposal=`;
+
   try{
-    const res = await fetch(SHEET_URL, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({name: name, memory: memory, proposal: ""})
-    });
+    const res = await fetch(url);
     const data = await res.json();
     if(data.status === "success"){ 
       showPopup("Memory Saved ❤️"); 
-      document.getElementById("memoryText").value=""; 
+      document.getElementById("memoryText").value="";
     } else showPopup("Error Saving Memory 😢");
   } catch(err){ showPopup("Error Connecting to Google Sheet 😢"); }
 }
@@ -136,12 +134,10 @@ async function saveMemory(){
 // ===== Proposal Answer =====
 async function answer(ans){
   const name = document.getElementById("name").value || "Anonymous";
+  const url = `${SHEET_URL}?name=${encodeURIComponent(name)}&memory=&proposal=${encodeURIComponent(ans)}`;
+
   try{
-    const res = await fetch(SHEET_URL, {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({name:name, memory:"", proposal:ans})
-    });
+    const res = await fetch(url);
     const data = await res.json();
     if(data.status === "success"){
       if(ans==="YES"){ fireworks(); showPopup("Forever Together ❤️"); }
