@@ -47,13 +47,13 @@
 </div>
 
 <script>
-// ========== CONFIG ==========
-const PASSWORD = "Love123"; // your password
+// ================== CONFIG ==================
+const PASSWORD = "Love123"; // ✅ Verified password
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbwnnjn9BSocfLmNTTb28swwpmQYf2f-iOQ8OQY6hy4Gqg7_mXpElXMILw0lAoUJVvj8Tw/exec";
 
-// ========== PASSWORD LOCK ==========
+// ================== PASSWORD LOCK ==================
 function unlock() {
-  let pass = document.getElementById("password").value;
+  const pass = document.getElementById("password").value.trim(); // remove extra spaces
   if (pass === PASSWORD) {
     document.getElementById("lockScreen").style.display = "none";
     document.getElementById("app").style.display = "block";
@@ -62,20 +62,23 @@ function unlock() {
   }
 }
 
-// ========== START LOVE EXPERIENCE ==========
+// ================== START LOVE EXPERIENCE ==================
 function startLove() {
-  document.getElementById("music").play();
-  let name = document.getElementById("name").value || "My Love";
+  const music = document.getElementById("music");
+  music.play();
 
-  let text = name + ", welcome to our love universe 💖!";
+  const name = document.getElementById("name").value || "My Love";
+  const text = name + ", welcome to our love universe 💖!";
+
   typeWriter(text);
   speak(text);
 }
 
-// ========== TYPEWRITER ==========
+// ================== TYPEWRITER ==================
 function typeWriter(text) {
   let i = 0;
   document.getElementById("message").innerHTML = "";
+
   function typing() {
     if (i < text.length) {
       document.getElementById("message").innerHTML += text.charAt(i);
@@ -86,18 +89,18 @@ function typeWriter(text) {
   typing();
 }
 
-// ========== AI VOICE ==========
+// ================== AI VOICE ==================
 function speak(text) {
-  let speech = new SpeechSynthesisUtterance(text);
+  const speech = new SpeechSynthesisUtterance(text);
   speech.rate = 0.9;
   speech.pitch = 1.1;
   speechSynthesis.speak(speech);
 }
 
-// ========== SAVE MEMORY TO GOOGLE SHEET ==========
+// ================== SAVE MEMORY TO GOOGLE SHEET ==================
 function saveMemory() {
-  let name = document.getElementById("name").value || "Anonymous";
-  let memory = document.getElementById("memoryText").value;
+  const name = document.getElementById("name").value || "Anonymous";
+  const memory = document.getElementById("memoryText").value.trim();
 
   if (!memory) {
     alert("Please write a memory ❤️");
@@ -110,14 +113,18 @@ function saveMemory() {
   })
   .then(res => res.json())
   .then(data => {
-    if (data.status === "success") alert("Memory saved ❤️");
-    else alert("Error saving memory 😢");
+    if (data.status === "success") {
+      alert("Memory saved ❤️");
+      document.getElementById("memoryText").value = ""; // clear input
+    } else {
+      alert("Error saving memory 😢");
+    }
   });
 }
 
-// ========== SAVE PROPOSAL ANSWER ==========
+// ================== SAVE PROPOSAL ANSWER ==================
 function answer(ans) {
-  let name = document.getElementById("name").value || "Anonymous";
+  const name = document.getElementById("name").value || "Anonymous";
 
   fetch(SHEET_URL, {
     method: "POST",
@@ -138,10 +145,10 @@ function answer(ans) {
   });
 }
 
-// ========== FIREWORK HEARTS ==========
+// ================== FIREWORK HEARTS ==================
 function fireworks() {
   for (let i = 0; i < 60; i++) {
-    let heart = document.createElement("div");
+    const heart = document.createElement("div");
     heart.className = "heart";
     heart.innerHTML = "💖";
     heart.style.left = Math.random() * 100 + "vw";
