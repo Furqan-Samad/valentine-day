@@ -1,0 +1,57 @@
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(270deg,#ff4b6e,#ff758c,#ff9a9e);
+background-size:600% 600%;
+animation:bgMove 10s infinite;
+text-align:center;
+color:white;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+#lockScreen{
+margin-top:150px;
+}
+
+input{
+padding:10px;
+border-radius:10px;
+border:none;
+margin:10px;
+}
+
+button{
+padding:12px 25px;
+border:none;
+border-radius:30px;
+background:#ff4b6e;
+color:white;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.1);
+}
+
+#proposal{
+margin-top:40px;
+}
+
+/* Floating Hearts */
+
+.heart{
+position:fixed;
+font-size:25px;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh);}
+100%{transform:translateY(-10vh);}
+}

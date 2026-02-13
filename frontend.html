@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Our Love Universe 💖</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- Password Screen -->
+
+<div id="lockScreen">
+<h2>Enter Secret Love Password ❤️</h2>
+<input id="password" placeholder="Password">
+<button onclick="unlock()">Enter</button>
+</div>
+
+<!-- Main App -->
+
+<div id="app" style="display:none;">
+
+<audio id="music" loop>
+<source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
+</audio>
+
+<h1>💖 Our Love Story 💖</h1>
+
+<input id="name" placeholder="Your Beautiful Name">
+
+<p id="message"></p>
+
+<button onclick="startLove()">Start Magic</button>
+
+<!-- Memory Vault -->
+
+<h2>Our Memory Vault 📸</h2>
+
+<input id="memoryText" placeholder="Write a memory">
+<button onclick="saveMemory()">Save Memory</button>
+
+<!-- Proposal -->
+
+<div id="proposal">
+<h2>Will You Be Mine Forever? 💍</h2>
+<button onclick="answer('YES')">YES 💖</button>
+<button onclick="answer('NO')">NO 😢</button>
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
