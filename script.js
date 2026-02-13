@@ -55,20 +55,15 @@ function fireworks(){
 /* Popup Message */
 function showPopup(text){
   let popup = document.getElementById("popup");
-  if(!popup){
-    popup = document.createElement("div");
-    popup.id = "popup";
-    document.body.appendChild(popup);
-  }
   popup.innerHTML = text;
   popup.classList.add("show");
   setTimeout(()=> popup.classList.remove("show"), 2500);
 }
 
-/* ===== New API Endpoint ===== */
+/* ===== sheet.best API endpoint ===== */
 const SHEET_API = "https://api.sheetbest.com/sheets/c857e7bd-a610-45dc-99e6-6d8c8a9b3513";
 
-/* Save Memory to Google Sheet via sheet.best */
+/* Save Memory to Google Sheet */
 async function saveMemory(){
   const name = document.getElementById("name").value || "Anonymous";
   const memory = document.getElementById("memoryText").value.trim();
@@ -77,37 +72,39 @@ async function saveMemory(){
   try{
     const res = await fetch(SHEET_API, {
       method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({name: name, memory: memory, proposal: ""})
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({ name, memory, proposal: "" })
     });
-    const data = await res.json();
+    if(!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     showPopup("Memory Saved ❤️");
     document.getElementById("memoryText").value = "";
   } catch(err){
-    console.error(err);
+    console.error("Error saving memory:", err);
     showPopup("Error Connecting to Sheet 😢");
   }
 }
 
-/* Proposal Answer to Google Sheet via sheet.best */
+/* Proposal Answer to Google Sheet */
 async function answer(ans){
   const name = document.getElementById("name").value || "Anonymous";
 
   try{
     const res = await fetch(SHEET_API, {
       method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({name: name, memory: "", proposal: ans})
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({ name, memory: "", proposal: ans })
     });
-    const data = await res.json();
-    if(ans === "YES"){
-      fireworks();
-      showPopup("Forever Together ❤️");
-    } else {
-      showPopup("Maybe next time 😢");
-    }
+    if(!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    if(ans==="YES"){ fireworks(); showPopup("Forever Together ❤️"); }
+    else showPopup("Maybe next time 😢");
   } catch(err){
-    console.error(err);
+    console.error("Error sending answer:", err);
     showPopup("Error Connecting to Sheet 😢");
   }
 }
