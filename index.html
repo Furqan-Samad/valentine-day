@@ -175,7 +175,7 @@ function speak(text){
 function saveMemory(){
   const name = document.getElementById("name").value || "Anonymous";
   const memory = document.getElementById("memoryText").value.trim();
-  if(!memory){ alert("Please write a memory ❤️"); return; }
+  if(!memory){ showPopup("Please write a memory ❤️"); return; }
 
   fetch(SHEET_URL, {
     method:"POST",
@@ -187,9 +187,7 @@ function saveMemory(){
     if(data.status === "success"){
       showPopup("Memory Saved ❤️");
       document.getElementById("memoryText").value = "";
-    } else {
-      showPopup("Error Saving Memory 😢");
-    }
+    } else { showPopup("Error Saving Memory 😢"); }
   }).catch(err => { showPopup("Error Connecting to Google Sheet 😢"); });
 }
 
@@ -206,10 +204,8 @@ function answer(ans){
   .then(data => {
     if(data.status === "success"){
       if(ans==="YES"){ fireworks(); showPopup("Forever Together ❤️"); }
-      else { showPopup("No option selected 😄"); }
-    } else {
-      showPopup("Error Saving Answer 😢");
-    }
+      else { showPopup("Maybe next time 😢"); }
+    } else { showPopup("Error Saving Answer 😢"); }
   }).catch(err => { showPopup("Error Connecting to Google Sheet 😢"); });
 }
 
