@@ -5,7 +5,7 @@ function unlock(){
 
 let pass=document.getElementById("password").value;
 
-if(pass==="Tooba123"){   // change password here
+if(pass==="Love123"){   // change password here
 document.getElementById("lockScreen").style.display="none";
 document.getElementById("app").style.display="block";
 }else{
