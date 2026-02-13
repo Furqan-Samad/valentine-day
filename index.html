@@ -2,53 +2,121 @@
 <html>
 <head>
 <title>Our Love Universe 💖</title>
-<link rel="stylesheet" href="style.css">
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #ffe6f0; color: #d6336c; }
+  input { padding: 10px; margin: 10px; width: 260px; border-radius: 5px; border: 1px solid #d6336c; }
+  button { padding: 10px 20px; margin: 10px; background: #d6336c; color: white; border: none; border-radius: 5px; cursor: pointer; }
+  button:hover { background: #b32455; }
+  #app { display:none; }
+  #proposal { margin-top: 20px; }
+</style>
 </head>
 
 <body>
 
 <!-- Password Screen -->
-
 <div id="lockScreen">
-<h2>Enter Secret Love Password ❤️</h2>
-<input id="password" placeholder="Password">
-<button onclick="unlock()">Enter</button>
+  <h2>Enter Secret Love Password ❤️</h2>
+  <input id="password" placeholder="Password">
+  <button onclick="unlock()">Enter</button>
 </div>
 
 <!-- Main App -->
+<div id="app">
+  <audio id="music" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+  </audio>
 
-<div id="app" style="display:none;">
+  <h1>💖 Our Love Story 💖</h1>
+  <input id="name" placeholder="Your Beautiful Name">
+  <p id="message"></p>
+  <button onclick="startLove()">Start Magic</button>
 
-<audio id="music" loop>
-<source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
-</audio>
+  <!-- Memory Vault -->
+  <h2>Our Memory Vault 📸</h2>
+  <input id="memoryText" placeholder="Write a memory">
+  <button onclick="saveMemory()">Save Memory</button>
 
-<h1>💖 Our Love Story 💖</h1>
-
-<input id="name" placeholder="Your Beautiful Name">
-
-<p id="message"></p>
-
-<button onclick="startLove()">Start Magic</button>
-
-<!-- Memory Vault -->
-
-<h2>Our Memory Vault 📸</h2>
-
-<input id="memoryText" placeholder="Write a memory">
-<button onclick="saveMemory()">Save Memory</button>
-
-<!-- Proposal -->
-
-<div id="proposal">
-<h2>Will You Be Mine Forever? 💍</h2>
-<button onclick="answer('YES')">YES 💖</button>
-<button onclick="answer('NO')">NO 😢</button>
+  <!-- Proposal -->
+  <div id="proposal">
+    <h2>Will You Be Mine Forever? 💍</h2>
+    <button onclick="answer('YES')">YES 💖</button>
+    <button onclick="answer('NO')">NO 😢</button>
+  </div>
 </div>
 
-</div>
+<script>
+// ========== CONFIG ==========
+const PASSWORD = "LOVE2026"; // Your secret password
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbwnnjn9BSocfLmNTTb28swwpmQYf2f-iOQ8OQY6hy4Gqg7_mXpElXMILw0lAoUJVvj8Tw/exec";
 
-<script src="script.js"></script>
+// ========== PASSWORD LOCK ==========
+function unlock() {
+  const pwd = document.getElementById('password').value;
+  if (pwd === PASSWORD) {
+    document.getElementById('lockScreen').style.display = "none";
+    document.getElementById('app').style.display = "block";
+  } else {
+    alert("Wrong password! 💔");
+  }
+}
+
+// ========== PLAY MUSIC ==========
+function startLove() {
+  const music = document.getElementById('music');
+  if (!document.getElementById('name').value) {
+    alert("Please enter your beautiful name 💌");
+    return;
+  }
+  music.play();
+  document.getElementById('message').innerText = "Let the magic begin! 💖";
+}
+
+// ========== SAVE MEMORY ==========
+function saveMemory() {
+  const name = document.getElementById('name').value;
+  const memory = document.getElementById('memoryText').value;
+
+  if (!name || !memory) {
+    alert("Please enter your name and a memory 💌");
+    return;
+  }
+
+  fetch(SHEET_URL, {
+    method: "POST",
+    body: JSON.stringify({ name: name, memory: memory, proposal: "" })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.status === "success")
+      alert("Memory saved! 💖");
+    else
+      alert("Error saving memory 😢");
+  });
+}
+
+// ========== SAVE PROPOSAL ==========
+function answer(ans) {
+  const name = document.getElementById('name').value;
+
+  if (!name) {
+    alert("Please enter your name 💌");
+    return;
+  }
+
+  fetch(SHEET_URL, {
+    method: "POST",
+    body: JSON.stringify({ name: name, memory: "", proposal: ans })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.status === "success")
+      alert("Answer recorded! 💍");
+    else
+      alert("Error saving answer 😢");
+  });
+}
+</script>
 
 </body>
 </html>
