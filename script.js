@@ -65,52 +65,49 @@ function showPopup(text){
   setTimeout(()=> popup.classList.remove("show"), 2500);
 }
 
-/* Save Memory to Google Sheet */
+/* ===== New API Endpoint ===== */
+const SHEET_API = "https://api.sheetbest.com/sheets/c857e7bd-a610-45dc-99e6-6d8c8a9b3513";
+
+/* Save Memory to Google Sheet via sheet.best */
 async function saveMemory(){
   const name = document.getElementById("name").value || "Anonymous";
   const memory = document.getElementById("memoryText").value.trim();
   if(!memory){ showPopup("Please write a memory ❤️"); return; }
 
   try{
-    const res = await fetch("https://script.google.com/macros/s/AKfycbzbmM-O6uRcJW6LIXjjyLIPgAIcSiDmsAtBumrENKG4mvOdZ05tcTtcpy-xWqswwV067A/exec", {
+    const res = await fetch(SHEET_API, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({name: name, memory: memory, proposal: ""})
     });
     const data = await res.json();
-    if(data.status === "success"){
-      showPopup("Memory Saved ❤️");
-      document.getElementById("memoryText").value = "";
-    } else {
-      showPopup("Error Saving Memory 😢");
-    }
+    showPopup("Memory Saved ❤️");
+    document.getElementById("memoryText").value = "";
   } catch(err){
-    showPopup("Error Connecting to Google Sheet 😢");
+    console.error(err);
+    showPopup("Error Connecting to Sheet 😢");
   }
 }
 
-/* Proposal Answer to Google Sheet */
+/* Proposal Answer to Google Sheet via sheet.best */
 async function answer(ans){
   const name = document.getElementById("name").value || "Anonymous";
 
   try{
-    const res = await fetch("https://script.google.com/macros/s/AKfycbzbmM-O6uRcJW6LIXjjyLIPgAIcSiDmsAtBumrENKG4mvOdZ05tcTtcpy-xWqswwV067A/exec", {
+    const res = await fetch(SHEET_API, {
       method: "POST",
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify({name: name, memory: "", proposal: ans})
     });
     const data = await res.json();
-    if(data.status === "success"){
-      if(ans === "YES"){
-        fireworks();
-        showPopup("Forever Together ❤️");
-      } else {
-        showPopup("Maybe next time 😢");
-      }
+    if(ans === "YES"){
+      fireworks();
+      showPopup("Forever Together ❤️");
     } else {
-      showPopup("Error Saving Answer 😢");
+      showPopup("Maybe next time 😢");
     }
   } catch(err){
-    showPopup("Error Connecting to Google Sheet 😢");
+    console.error(err);
+    showPopup("Error Connecting to Sheet 😢");
   }
 }
