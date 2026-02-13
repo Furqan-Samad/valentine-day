@@ -60,30 +60,6 @@
     z-index: 9999;
   }
   @keyframes float { 0% { transform: translateY(0); opacity:1; } 100% { transform: translateY(-100vh); opacity:0; } }
-
-  /* Proposal Popup */
-  #popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    background: #ffd6e8;
-    color: #d6336c;
-    border-radius: 20px;
-    padding: 40px 30px;
-    font-size: 24px;
-    font-family: 'Parisienne', cursive;
-    text-align: center;
-    z-index: 10000;
-    box-shadow: 0 0 20px rgba(214,51,108,0.6);
-    transition: transform 0.5s ease, opacity 0.5s ease;
-    opacity: 0;
-  }
-  #popup.show {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-
   /* responsive */
   @media(max-width: 480px){
     input { width: 90%; }
@@ -122,11 +98,8 @@
   </div>
 </div>
 
-<!-- Proposal Popup -->
-<div id="popup"></div>
-
 <script>
-const PASSWORD = "Love123";
+const PASSWORD = "Love123"; // password
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbwnnjn9BSocfLmNTTb28swwpmQYf2f-iOQ8OQY6hy4Gqg7_mXpElXMILw0lAoUJVvj8Tw/exec";
 
 // ===== Password Lock =====
@@ -149,7 +122,7 @@ function startLove(){
   speak(text);
 }
 
-// ===== Typewriter =====
+// ===== Typewriter Effect =====
 function typeWriter(text){
   let i = 0;
   document.getElementById("message").innerHTML = "";
@@ -175,6 +148,7 @@ function speak(text){
 function saveMemory(){
   const name = document.getElementById("name").value || "Anonymous";
   const memory = document.getElementById("memoryText").value.trim();
+
   if(!memory){ alert("Please write a memory ❤️"); return; }
 
   fetch(SHEET_URL, {
@@ -185,12 +159,12 @@ function saveMemory(){
   .then(res => res.json())
   .then(data => {
     if(data.status === "success"){
-      showPopup("Memory Saved ❤️");
+      alert("Memory saved ❤️");
       document.getElementById("memoryText").value = "";
     } else {
-      showPopup("Error Saving Memory 😢");
+      alert("Error saving memory 😢");
     }
-  }).catch(err => { showPopup("Error Connecting to Google Sheet 😢"); });
+  }).catch(err => { alert("Error connecting to Google Sheet 😢"); });
 }
 
 // ===== Proposal Answer =====
@@ -205,12 +179,12 @@ function answer(ans){
   .then(res => res.json())
   .then(data => {
     if(data.status === "success"){
-      if(ans==="YES"){ fireworks(); showPopup("Forever Together ❤️"); }
-      else { showPopup("No option selected 😄"); }
+      if(ans==="YES"){ fireworks(); alert("Forever Together ❤️"); }
+      else { alert("No option selected 😄"); }
     } else {
-      showPopup("Error Saving Answer 😢");
+      alert("Error saving answer 😢");
     }
-  }).catch(err => { showPopup("Error Connecting to Google Sheet 😢"); });
+  }).catch(err => { alert("Error connecting to Google Sheet 😢"); });
 }
 
 // ===== Fireworks Hearts =====
@@ -223,14 +197,6 @@ function fireworks(){
     document.body.appendChild(heart);
     setTimeout(()=>heart.remove(),4000);
   }
-}
-
-// ===== Popup =====
-function showPopup(text){
-  const popup = document.getElementById("popup");
-  popup.innerHTML = text;
-  popup.classList.add("show");
-  setTimeout(()=> popup.classList.remove("show"), 2500);
 }
 </script>
 
