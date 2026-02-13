@@ -14,7 +14,6 @@ function startLove(){
   document.getElementById("music").play();
   let name = document.getElementById("name").value || "My Love";
   let text = name + ", welcome to our love universe 💖!";
-
   typeWriter(text);
   speak(text);
 }
@@ -23,7 +22,6 @@ function startLove(){
 function typeWriter(text){
   let i = 0;
   document.getElementById("message").innerHTML = "";
-
   function typing(){
     if(i < text.length){
       document.getElementById("message").innerHTML += text.charAt(i);
@@ -74,7 +72,7 @@ async function saveMemory(){
   if(!memory){ showPopup("Please write a memory ❤️"); return; }
 
   try{
-    const res = await fetch("https://script.google.com/macros/s/AKfycbw4DvQ1iehVXiQnKctZeckafKAABGRN6H5KDnW6xPL8HbjuWxoaFU3hBdkapNfHu8eK9g/exec", {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbzbmM-O6uRcJW6LIXjjyLIPgAIcSiDmsAtBumrENKG4mvOdZ05tcTtcpy-xWqswwV067A/exec", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({name: name, memory: memory, proposal: ""})
@@ -96,9 +94,9 @@ async function answer(ans){
   const name = document.getElementById("name").value || "Anonymous";
 
   try{
-    const res = await fetch("https://script.google.com/macros/s/AKfycbw4DvQ1iehVXiQnKctZeckafKAABGRN6H5KDnW6xPL8HbjuWxoaFU3hBdkapNfHu8eK9g/exec", {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbzbmM-O6uRcJW6LIXjjyLIPgAIcSiDmsAtBumrENKG4mvOdZ05tcTtcpy-xWqswwV067A/exec", {
       method: "POST",
-      headers: {"Content-Type": "application/json"},
+      headers: {"Content-Type":"application/json"},
       body: JSON.stringify({name: name, memory: "", proposal: ans})
     });
     const data = await res.json();
