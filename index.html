@@ -1,153 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Our Love Universe 💖</title>
-<link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  body { font-family:'Roboto',sans-serif; text-align:center; background:linear-gradient(135deg,#ffe6f0,#ffd6e8); color:#d6336c; margin:0; padding:0; }
-  h1,h2{ font-family:'Parisienne',cursive; }
-  .screen{ padding:40px 20px; }
-  input{ padding:12px; margin:10px 0; width:80%; max-width:300px; border-radius:25px; border:1px solid #d6336c; outline:none; text-align:center; font-size:16px; }
-  button{ padding:12px 30px; margin:10px; background:#d6336c; color:white; border:none; border-radius:25px; cursor:pointer; font-size:16px; transition:.3s; }
-  button:hover{ background:#b32455; }
-  #message{ font-size:18px; margin:20px 0; min-height:40px; }
-  #proposal button{ font-size:18px; }
-  .heart{ position:fixed; font-size:24px; animation:float 4s linear; z-index:9999; }
-  @keyframes float{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-100vh);opacity:0}}
-  #popup{ position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0); background:#ffd6e8; color:#d6336c; border-radius:20px; padding:40px 30px; font-size:24px; font-family:'Parisienne',cursive; text-align:center; z-index:10000; box-shadow:0 0 20px rgba(214,51,108,.6); transition:transform .5s ease,opacity .5s ease; opacity:0; }
-  #popup.show{ transform:translate(-50%,-50%) scale(1); opacity:1; }
-  @media(max-width:480px){ input{ width:90%; } button{ width:80%; } }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <!-- Password Screen -->
-<div id="passwordScreen" class="screen">
-  <h2>Enter Secret Love Password ❤️</h2>
-  <input id="passwordInput" placeholder="Password">
-  <button onclick="unlockPassword()">Enter</button>
+
+<div id="lockScreen">
+<h2>Enter Secret Love Password ❤️</h2>
+<input id="password" placeholder="Password">
+<button onclick="unlock()">Enter</button>
 </div>
 
-<!-- Main App Screen -->
-<div id="mainApp" class="screen" style="display:none;">
-  <audio id="music" loop>
-    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
-  </audio>
+<!-- Main App -->
 
-  <h1>💖 Our Love Story 💖</h1>
-  <input id="nameInput" placeholder="Your Beautiful Name">
-  <p id="message"></p>
-  <button onclick="startLove()">Start Magic</button>
+<div id="app" style="display:none;">
 
-  <h2>Our Memory Vault 📸</h2>
-  <input id="memoryInput" placeholder="Write a memory">
-  <button onclick="saveMemory()">Save Memory</button>
+<audio id="music" loop>
+<source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
+</audio>
 
-  <div id="proposal">
-    <h2>Will You Be Mine Forever? 💍</h2>
-    <button onclick="answer('YES')">YES 💖</button>
-    <button onclick="answer('NO')">NO 😢</button>
-  </div>
+<h1>💖 Our Love Story 💖</h1>
+
+<input id="name" placeholder="Your Beautiful Name">
+
+<p id="message"></p>
+
+<button onclick="startLove()">Start Magic</button>
+
+<!-- Memory Vault -->
+
+<h2>Our Memory Vault 📸</h2>
+
+<input id="memoryText" placeholder="Write a memory">
+<button onclick="saveMemory()">Save Memory</button>
+
+<!-- Proposal -->
+
+<div id="proposal">
+<h2>Will You Be Mine Forever? 💍</h2>
+<button onclick="answer('YES')">YES 💖</button>
+<button onclick="answer('NO')">NO 😢</button>
 </div>
 
-<!-- Popup -->
-<div id="popup"></div>
+</div>
 
-<script>
-const PASSWORD = "Love123";
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbw4DvQ1iehVXiQnKctZeckafKAABGRN6H5KDnW6xPL8HbjuWxoaFU3hBdkapNfHu8eK9g/exec";
-
-// ===== Password Unlock =====
-function unlockPassword(){
-  const pass = document.getElementById("passwordInput").value.trim();
-  if(pass === PASSWORD){
-    document.getElementById("passwordScreen").style.display="none";
-    document.getElementById("mainApp").style.display="block";
-  } else alert("Wrong password 😄");
-}
-
-// ===== Typewriter Effect =====
-function typeWriter(text){
-  let i=0;
-  const msg = document.getElementById("message");
-  msg.innerHTML="";
-  function typing(){ if(i<text.length){ msg.innerHTML+=text.charAt(i); i++; setTimeout(typing,50); } }
-  typing();
-}
-
-// ===== AI Voice =====
-function speak(text){
-  const speech=new SpeechSynthesisUtterance(text);
-  speech.rate=0.9; speech.pitch=1.1;
-  speechSynthesis.speak(speech);
-}
-
-// ===== Start Love =====
-function startLove(){
-  document.getElementById("music").play();
-  const name = document.getElementById("nameInput").value || "My Love";
-  const text = name + ", welcome to our love universe 💖!";
-  typeWriter(text);
-  speak(text);
-}
-
-// ===== Fireworks Hearts =====
-function fireworks(){
-  for(let i=0;i<60;i++){
-    const heart=document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="💖";
-    heart.style.left=Math.random()*100+"vw";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),4000);
-  }
-}
-
-// ===== Popup =====
-function showPopup(text){
-  const popup=document.getElementById("popup");
-  popup.innerHTML=text;
-  popup.classList.add("show");
-  setTimeout(()=>popup.classList.remove("show"),2500);
-}
-
-// ===== Save Memory =====
-async function saveMemory(){
-  const name = document.getElementById("nameInput").value || "Anonymous";
-  const memory = document.getElementById("memoryInput").value.trim();
-  if(!memory){ showPopup("Please write a memory ❤️"); return; }
-
-  try{
-    const res = await fetch(SHEET_URL, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({name:name,memory:memory,proposal:""})
-    });
-    const data = await res.json();
-    if(data.status==="success"){ showPopup("Memory Saved ❤️"); document.getElementById("memoryInput").value=""; }
-    else showPopup("Error Saving Memory 😢");
-  }catch(err){ showPopup("Error Connecting to Google Sheet 😢"); }
-}
-
-// ===== Proposal Answer =====
-async function answer(ans){
-  const name = document.getElementById("nameInput").value || "Anonymous";
-  try{
-    const res = await fetch(SHEET_URL,{
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({name:name,memory:"",proposal:ans})
-    });
-    const data = await res.json();
-    if(data.status==="success"){
-      if(ans==="YES"){ fireworks(); showPopup("Forever Together ❤️"); }
-      else showPopup("Maybe next time 😢");
-    } else showPopup("Error Saving Answer 😢");
-  }catch(err){ showPopup("Error Connecting to Google Sheet 😢"); }
-}
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
