@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Our Love Universe 💖</title>
-<style>
-  body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #ffe6f0; color: #d6336c; }
-  input { padding: 10px; margin: 10px; width: 260px; border-radius: 5px; border: 1px solid #d6336c; }
-  button { padding: 10px 20px; margin: 10px; background: #d6336c; color: white; border: none; border-radius: 5px; cursor: pointer; }
-  button:hover { background: #b32455; }
-  #app { display:none; }
-  #proposal { margin-top: 20px; }
-</style>
+  <title>Our Love Universe 💖</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #ffe6f0; color: #d6336c; }
+    input { padding: 10px; margin: 10px; width: 260px; border-radius: 5px; border: 1px solid #d6336c; }
+    button { padding: 10px 20px; margin: 10px; background: #d6336c; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #b32455; }
+    #app { display: none; }
+    #proposal { margin-top: 20px; }
+    .heart { position: fixed; font-size: 24px; animation: float 4s linear; }
+    @keyframes float { 0% { transform: translateY(0); } 100% { transform: translateY(-100vh); } }
+  </style>
 </head>
-
 <body>
 
 <!-- Password Screen -->
@@ -47,38 +48,59 @@
 
 <script>
 // ========== CONFIG ==========
-const PASSWORD = "LOVE2026"; // Your secret password
+const PASSWORD = "Love123"; // your password
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbwnnjn9BSocfLmNTTb28swwpmQYf2f-iOQ8OQY6hy4Gqg7_mXpElXMILw0lAoUJVvj8Tw/exec";
 
 // ========== PASSWORD LOCK ==========
 function unlock() {
-  const pwd = document.getElementById('password').value;
-  if (pwd === PASSWORD) {
-    document.getElementById('lockScreen').style.display = "none";
-    document.getElementById('app').style.display = "block";
+  let pass = document.getElementById("password").value;
+  if (pass === PASSWORD) {
+    document.getElementById("lockScreen").style.display = "none";
+    document.getElementById("app").style.display = "block";
   } else {
-    alert("Wrong password! 💔");
+    alert("Wrong password 😄");
   }
 }
 
-// ========== PLAY MUSIC ==========
+// ========== START LOVE EXPERIENCE ==========
 function startLove() {
-  const music = document.getElementById('music');
-  if (!document.getElementById('name').value) {
-    alert("Please enter your beautiful name 💌");
-    return;
-  }
-  music.play();
-  document.getElementById('message').innerText = "Let the magic begin! 💖";
+  document.getElementById("music").play();
+  let name = document.getElementById("name").value || "My Love";
+
+  let text = name + ", welcome to our love universe 💖!";
+  typeWriter(text);
+  speak(text);
 }
 
-// ========== SAVE MEMORY ==========
-function saveMemory() {
-  const name = document.getElementById('name').value;
-  const memory = document.getElementById('memoryText').value;
+// ========== TYPEWRITER ==========
+function typeWriter(text) {
+  let i = 0;
+  document.getElementById("message").innerHTML = "";
+  function typing() {
+    if (i < text.length) {
+      document.getElementById("message").innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing, 50);
+    }
+  }
+  typing();
+}
 
-  if (!name || !memory) {
-    alert("Please enter your name and a memory 💌");
+// ========== AI VOICE ==========
+function speak(text) {
+  let speech = new SpeechSynthesisUtterance(text);
+  speech.rate = 0.9;
+  speech.pitch = 1.1;
+  speechSynthesis.speak(speech);
+}
+
+// ========== SAVE MEMORY TO GOOGLE SHEET ==========
+function saveMemory() {
+  let name = document.getElementById("name").value || "Anonymous";
+  let memory = document.getElementById("memoryText").value;
+
+  if (!memory) {
+    alert("Please write a memory ❤️");
     return;
   }
 
@@ -86,35 +108,46 @@ function saveMemory() {
     method: "POST",
     body: JSON.stringify({ name: name, memory: memory, proposal: "" })
   })
-  .then(response => response.json())
+  .then(res => res.json())
   .then(data => {
-    if (data.status === "success")
-      alert("Memory saved! 💖");
-    else
-      alert("Error saving memory 😢");
+    if (data.status === "success") alert("Memory saved ❤️");
+    else alert("Error saving memory 😢");
   });
 }
 
-// ========== SAVE PROPOSAL ==========
+// ========== SAVE PROPOSAL ANSWER ==========
 function answer(ans) {
-  const name = document.getElementById('name').value;
-
-  if (!name) {
-    alert("Please enter your name 💌");
-    return;
-  }
+  let name = document.getElementById("name").value || "Anonymous";
 
   fetch(SHEET_URL, {
     method: "POST",
     body: JSON.stringify({ name: name, memory: "", proposal: ans })
   })
-  .then(response => response.json())
+  .then(res => res.json())
   .then(data => {
-    if (data.status === "success")
-      alert("Answer recorded! 💍");
-    else
+    if (data.status === "success") {
+      if (ans === "YES") {
+        fireworks();
+        alert("Forever Together ❤️");
+      } else {
+        alert("No option disabled 😄");
+      }
+    } else {
       alert("Error saving answer 😢");
+    }
   });
+}
+
+// ========== FIREWORK HEARTS ==========
+function fireworks() {
+  for (let i = 0; i < 60; i++) {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 4000);
+  }
 }
 </script>
 
